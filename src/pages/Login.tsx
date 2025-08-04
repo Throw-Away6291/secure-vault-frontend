@@ -15,8 +15,6 @@ const Login = () => {
   const [selectedPattern, setSelectedPattern] = useState<number[]>([]);
   const [formData, setFormData] = useState({
     accountNumber: '',
-    password: '',
-    rememberMe: false,
   });
 
   const handleInputChange = (field: string, value: any) => {
@@ -43,7 +41,7 @@ const Login = () => {
   const isStepValid = (stepNumber: number) => {
     switch (stepNumber) {
       case 1:
-        return formData.accountNumber && formData.password;
+        return formData.accountNumber;
       case 2:
         return selectedPattern.length === 5;
       default:
@@ -76,56 +74,16 @@ const Login = () => {
                 />
               </div>
 
-              <div>
-                <Label htmlFor="password">Password</Label>
-                <div className="relative">
-                  <Input
-                    id="password"
-                    type={showPassword ? 'text' : 'password'}
-                    value={formData.password}
-                    onChange={(e) => handleInputChange('password', e.target.value)}
-                    placeholder="Enter your password"
-                    className="pr-10"
-                  />
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    className="absolute right-0 top-0 h-full px-3 hover:bg-transparent"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? (
-                      <EyeOff className="w-4 h-4 text-muted-foreground" />
-                    ) : (
-                      <Eye className="w-4 h-4 text-muted-foreground" />
-                    )}
-                  </Button>
-                </div>
-              </div>
-
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="rememberMe"
-                  checked={formData.rememberMe}
-                  onCheckedChange={(checked) => handleInputChange('rememberMe', checked)}
-                />
-                <Label htmlFor="rememberMe" className="text-sm">
-                  Remember me on this device
-                </Label>
-              </div>
 
               <Button
                 className="w-full"
                 onClick={() => setStep(2)}
                 disabled={!isStepValid(1)}
               >
-                Continue to Security Pattern
+                Generate Authentication QR
               </Button>
 
-              <div className="text-center space-y-2">
-                <Link to="#" className="text-sm text-primary hover:underline block">
-                  Forgot Password?
-                </Link>
+              <div className="text-center">
                 <div className="text-sm text-muted-foreground">
                   Don't have an account?{' '}
                   <Link to="/register" className="text-primary hover:underline">
