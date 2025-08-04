@@ -36,21 +36,15 @@ const Register = () => {
     termsAccepted: false,
   });
 
-  const [kycAnswers, setKycAnswers] = useState<string[]>(new Array(10).fill(''));
+  const [kycAnswers, setKycAnswers] = useState<string[]>(new Array(5).fill(''));
   const [selectedPattern, setSelectedPattern] = useState<number[]>([]);
-  const [signature, setSignature] = useState('');
 
   const kycQuestions = [
-    "What was your childhood nickname?",
-    "What is the name of your first school?",
-    "What bank did your parents use when you were a child?",
-    "What was the name of your first pet?",
-    "In which city were you born?",
-    "What is your mother's maiden name?",
-    "What was the make of your first car?",
-    "What is the name of the street you grew up on?",
-    "What was your favorite subject in school?",
-    "What is the name of your favorite childhood friend?"
+    "What was your childhood nickname that only your family used?",
+    "What is the name of your first school and which class teacher do you remember most?",
+    "What was the name of your first pet and what was their favorite treat?",
+    "In which hospital were you born and what was your birth weight?",
+    "What was the first movie you watched in a cinema hall and who took you?"
   ];
 
   const handleInputChange = (field: string, value: any) => {
@@ -86,20 +80,26 @@ const Register = () => {
       case 5:
         return selectedPattern.length === 5;
       case 6:
-        return formData.termsAccepted && signature.trim() !== '';
+        return formData.termsAccepted;
       default:
         return false;
     }
   };
 
-  const handleSubmit = () => {
-    console.log('Registration Data:', {
+  const handleSubmit = async () => {
+    const registrationData = {
       personalInfo: formData,
       kycAnswers,
       securityPattern: selectedPattern,
-      signature
-    });
-    // Here you would typically send the data to your backend
+      timestamp: new Date().toISOString()
+    };
+    
+    console.log('Registration Data:', registrationData);
+    
+    // TODO: Encrypt data and save to Firebase
+    // Example structure for Firebase integration:
+    // await encryptAndSaveToFirebase(registrationData);
+    
     alert('Registration completed successfully! (Demo)');
   };
 
@@ -387,7 +387,7 @@ const Register = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <span className="w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-sm font-bold">6</span>
-                Terms & Signature
+                Terms & Conditions
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -402,20 +402,6 @@ const Register = () => {
                   <Link to="#" className="text-primary underline ml-1">Privacy Policy</Link> of Big Secure Bank. 
                   I understand that this is a secure banking platform and all information provided is accurate.
                 </Label>
-              </div>
-
-              <div>
-                <Label htmlFor="signature">Digital Signature *</Label>
-                <Input
-                  id="signature"
-                  value={signature}
-                  onChange={(e) => setSignature(e.target.value)}
-                  placeholder="Type your full name as digital signature"
-                  className="mt-1"
-                />
-                <p className="text-xs text-muted-foreground mt-1">
-                  By typing your name, you agree to use it as your digital signature for this application.
-                </p>
               </div>
             </CardContent>
           </Card>
